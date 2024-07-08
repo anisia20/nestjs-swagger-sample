@@ -36,7 +36,7 @@ export class PilotService {
     let service_id = serviceInfo?.service_id;
     //로컬 및 stage 요청은 도메인 검증페스
     if(domain.includes('localhost') || domain.includes('pilot.com')){
-      service_id = 1; //Pilot 창업센터 서비스아이디
+      service_id = 1; //Pilot 서비스아이디
     }
 
     //2. 에어테이블 정보
