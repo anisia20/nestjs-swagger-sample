@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import {IsBoolean, IsNotEmpty, IsNumber, IsString} from 'class-validator';
+import {IsNumber, IsString} from 'class-validator';
 import {ApiHideProperty, ApiProperty} from "@nestjs/swagger";
 
 export class CreateAirtableInfoDto {
