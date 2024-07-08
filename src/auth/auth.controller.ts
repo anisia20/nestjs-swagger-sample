@@ -1,21 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Headers, UseGuards} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
 import {AuthDto} from "./dto/auth.dto";
+import {JwtAuthGuard} from "../common/config/jwt.auth.guard";
 @ApiTags('AUTH')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('auth')
-  createAuth(@Body() authDto: AuthDto) {
+  auth(@Body() authDto: AuthDto) {
     return this.authService.auth(authDto);
   }
   @Post('token')
-  createToken(@Body() createAuthDto: CreateUserDto) {
-    return this.authService.createUser(createAuthDto);
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard)
+  refreshToken(@Headers('authorization') authHeader: string) {
+    const token = authHeader.split(' ')[1]; // 'Bearer ' 부분을 제거하고 토큰만 추출
+    return this.authService.refreshToken(token);
   }
 
   @Post('user')

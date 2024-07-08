@@ -1,3 +1,6 @@
+jwt:
+  secret: testsm
+
 # dev 로컬 역할
 datasource:
   driverName: mysql

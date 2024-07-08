@@ -43,3 +43,7 @@ export const encryptPassword = async (password: string): Promise<string> => {
     const hashedPassword = await bcrypt.hash(password, salt);
     return hashedPassword;
 };
+
+export const validatePassword = async (password: string, hashedPassword: string): Promise<boolean> => {
+    return await bcrypt.compare(password, hashedPassword);
+};

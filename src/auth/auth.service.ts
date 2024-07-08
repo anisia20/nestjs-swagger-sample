@@ -1,23 +1,27 @@
 import {Injectable, Logger} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {encryptPassword, getYmd} from "../utils/util";
+import {encryptPassword, getYmd, validatePassword} from "../utils/util";
 import {ResultResponse} from "../common/dto/result-response";
 import {Def} from "../common/config/def";
 import {UserRepository} from "./repository/user-repository.service";
 import {AuthDto} from "./dto/auth.dto";
+import {JwtService} from "@nestjs/jwt";
+import {RefreshTokenService} from "./service/refresh.token.service";
+import {ConfigService} from "@nestjs/config";
 
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name); // Logger 인스턴스 생성
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly refreshTokenService: RefreshTokenService, // 리프레시 토큰 서비스 주입
   ) {}
 
   async auth(authDto: AuthDto) {
     const result = new ResultResponse();
-    const encPassword = await encryptPassword(authDto.user_pass);
-
     this.logger.log(`auth start!! D=${authDto.user_id}`);
     const data = await this.userRepository.findOneByUserid(authDto.user_id);
     if(!data){
@@ -25,17 +29,48 @@ export class AuthService {
       await Def.fail(result, Def.R_201);
       return result
     }
+    const isPasswordValid = await validatePassword(authDto.user_pass, data.user_pass);
 
-    if(encPassword !== data.user_pass){
+    if(!isPasswordValid){
       this.logger.log(`auth not match password!! D=${authDto.user_id}`);
       await Def.fail(result, Def.R_202);
       return result
     }
 
+    const payload = {
+      user_code: data.user_code,
+      user_name: data.user_name,
+    };
 
+    const accessToken = this.jwtService.sign(payload);
+    const refreshToken = await this.refreshTokenService.generateRefreshToken(payload);
 
-
+    const response = {
+      accessToken,
+      refreshToken
+    };
+    await Def.successData(result, response);
+    return result;
   }
+
+  async refreshToken(token: string){
+    const result = new ResultResponse();
+
+    const decoded = this.jwtService.verify(token, {
+      secret: this.configService.get<string>('jwt.secret')
+    });
+    const payload = {
+      user_code: decoded.user_code,
+      user_name: decoded.user_name,
+    };
+    const accessToken = this.jwtService.sign(payload);
+    const response = {
+      accessToken
+    };
+    await Def.successData(result, response);
+    return result;
+  }
+
   async createUser(createAuthDto: CreateUserDto) {
     const result = new ResultResponse();
     const today = getYmd();
