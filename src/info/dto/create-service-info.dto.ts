@@ -11,7 +11,7 @@ export class CreateServiceInfoDto {
     service_name: string;
 
     @ApiProperty({
-        example: 'unitblack.co.kr',
+        example: 'pilot.co.kr',
         description: '도메인명',
     })
     @IsString()
