@@ -1,3 +1,4 @@
+# 인증키 테스트 변경사용 필요
 jwt:
   secret: testsm
 
