@@ -1,4 +1,4 @@
-
+import * as bcrypt from 'bcrypt';
 export const getYmd = (daysOffset: number = 0): string => {
     const today = new Date();
     // daysOffset을 이용하여 날짜 계산
@@ -36,3 +36,10 @@ function extractDomain(hostname: string): string {
     }
     return hostname;
 }
+
+export const encryptPassword = async (password: string): Promise<string> => {
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    return hashedPassword;
+};

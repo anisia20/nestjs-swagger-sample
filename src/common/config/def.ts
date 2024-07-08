@@ -5,10 +5,9 @@ export class Def{
     public static R_100 = {"code": 100, "desc": "성공"}
 
     //정보
-    /** 서비스등록 실패 **/
-    public static R_201 = {"code": 201, "desc": "서비스등록 실패"};
+    public static R_201 = {"code": 201, "desc": "인증 실패"};
+    public static R_202 = {"code": 202, "desc": "패스워드 오류"};
 
-    /** 서비스등록 실패 **/
     public static R_301 = {"code": 301, "desc": "도메인 조회 실패"};
 
     //기타
