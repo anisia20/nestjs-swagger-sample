@@ -1,4 +1,3 @@
-# dev 로컬 역할
 datasource:
   driverName: mysql
   host: localhost
@@ -10,5 +9,3 @@ datasource:
   loc: Asia/Seoul
   logging: true
   maxconn: 1
-  # 주의 운영이면 .....
-  isdev: true

@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: total-public-api-service
+  labels:
+    app: total-public-api
+spec:
+  selector:
+    app: total-public-api
+  ports:
+    - port: 3000
+      protocol: TCP
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: total-public-api-ac
+  labels:
+    app: total-public-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: total-public-api-deployment
+  labels:
+    app: total-public-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: total-public-api
+  template:
+    metadata:
+      labels:
+        app: total-public-api
+    spec:
+      serviceAccountName: total-public-api-ac
+      containers:
+        - name: total-public-api
+          image: 123123.dkr.ecr.ap-northeast-2.amazonaws.com/total-public-api:19
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              cpu: "1"
+              memory: 800Mi
+              ephemeral-storage: "800Mi"
+            requests:
+              cpu: 200m
+              memory: 128Mi
+              ephemeral-storage: "128Mi"

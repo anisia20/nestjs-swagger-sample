@@ -19,14 +19,15 @@ export const databaseProviders = [
         username: configService.get<string>('datasource.username'),
         password: configService.get<string>('datasource.password'),
         database: configService.get<string>('datasource.database'),
-        entities: [__dirname + '/../client/entities/*.entity{.ts,.js}'],
+        entities: [__dirname + '/../**/entities/*.entity{.ts,.js}'],
+        synchronize: configService.get<boolean>('datasource.isdev'), // 개발 환경에서만 true로 설정
         logging: configService.get<boolean>('datasource.logging'),
         timezone: '+09:00',
         cache: {
           duration: 60000,
         },
         extra: {
-          connectionLimit: 32,
+          connectionLimit: configService.get<number>('datasource.maxconn'),
         },
       });
 
