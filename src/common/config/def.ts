@@ -8,7 +8,6 @@ export class Def{
     /** 서비스등록 실패 **/
     public static R_201 = {"code": 201, "desc": "서비스등록 실패"};
 
-    //프랜차이즈창업센터
     /** 서비스등록 실패 **/
     public static R_301 = {"code": 301, "desc": "도메인 조회 실패"};
 

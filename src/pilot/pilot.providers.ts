@@ -1,11 +1,11 @@
 import { DataSource } from 'typeorm';
-import {Franchise} from "./entities/franchise.entity";
+import {Pilot} from "./entities/pilot.entity";
 
 export const pilotProviders = [
   {
-    provide: 'FRANCHISE_REPOSITORY',
+    provide: 'PILOT_REPOSITORY',
     useFactory: (dataSource: DataSource) => {
-      return dataSource.getRepository(Franchise);
+      return dataSource.getRepository(Pilot);
     },
     inject: ['DATA_SOURCE'],
   },

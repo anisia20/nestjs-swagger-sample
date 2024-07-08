@@ -2,20 +2,20 @@ import {Inject, Injectable, Logger} from "@nestjs/common";
 import {CreatePilotDto} from "../dto/create-pilot.dto";
 import {UpdatePilotDto} from "../dto/update-pilot.dto";
 import {Repository} from "typeorm";
-import {Franchise} from "../entities/franchise.entity";
+import {Pilot} from "../entities/pilot.entity";
 
 @Injectable()
 export class PilotRepository {
     private readonly logger = new Logger(PilotRepository.name); // Logger 인스턴스 생성
     constructor(
-        @Inject('FRANCHISE_REPOSITORY')
-        private franchiseRepository: Repository<Franchise>,
+        @Inject('PILOT_REPOSITORY')
+        private pilotRepository: Repository<Pilot>,
     ) {
     }
 
     async create(creatFranchiseDto: CreatePilotDto) {
         try {
-            await this.franchiseRepository.save(creatFranchiseDto);
+            await this.pilotRepository.save(creatFranchiseDto);
             return 0;
         } catch (e) {
             this.logger.debug(e);
@@ -25,7 +25,7 @@ export class PilotRepository {
 
     async findAll() {
         try {
-            return await this.franchiseRepository.find();
+            return await this.pilotRepository.find();
         } catch (e) {
             this.logger.debug(e);
             return;
@@ -34,7 +34,7 @@ export class PilotRepository {
 
     async findOne(franchise_id: number) {
         try {
-            return await this.franchiseRepository.findOne({where: {franchise_id}});
+            return await this.pilotRepository.findOne({where: {franchise_id}});
         } catch (e) {
             this.logger.debug(e);
             return;
@@ -43,7 +43,7 @@ export class PilotRepository {
 
     async update(franchise_id: number, updateFranchiseDto: UpdatePilotDto) {
         try {
-            await this.franchiseRepository.update(franchise_id, updateFranchiseDto);
+            await this.pilotRepository.update(franchise_id, updateFranchiseDto);
             return 0;
         } catch (e) {
             this.logger.debug(e);
@@ -53,7 +53,7 @@ export class PilotRepository {
 
     async remove(franchise_id: number) {
         try {
-            await this.franchiseRepository.delete(franchise_id);
+            await this.pilotRepository.delete(franchise_id);
             return 0;
         } catch (e) {
             this.logger.debug(e);

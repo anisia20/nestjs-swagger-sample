@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
 import {Entity, Column, PrimaryGeneratedColumn, Index} from 'typeorm';
 
-@Entity({ name: 'ta_franchise' })
+@Entity({ name: 'ta_pilot' })
 @Index(['airtable_id', 'name', 'tel', 'create_date', 'delete_yn'])
 @Index(['name', 'tel'], { unique: true })
-export class Franchise {
+export class Pilot {
     @PrimaryGeneratedColumn()
     franchise_id: number;
 
